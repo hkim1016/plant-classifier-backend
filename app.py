@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from http import HTTPStatus
 from PIL import Image
-from pytorch import analyze_plant, analyze_plant_live_view
+from pytorch import analyze_plant
 
 app = FastAPI()
 
