@@ -28,9 +28,3 @@ async def plant_analysis(file: UploadFile = File(...)):
     print('ANALYZING PLANT')
     print('filename: ', file.filename)
     return analyze_plant(file.file)
-
-@app.post('/plant_analysis_live')
-async def plant_analysis_live(file: UploadFile = File(...)):
-    print('ANALYZING PLANT')
-    print('filename: ', file.filename)
-    return analyze_plant_live_view(file.file)

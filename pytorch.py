@@ -78,40 +78,6 @@ def analyze_plant(img):
     except Exception as e:
         print('Error', e)
         raise BadRequestException('Something went wrong', HTTPStatus.BAD_REQUEST)
-    
-def analyze_plant_live_view(img):
-    try:
-        __model.eval()
-
-        test_transform = transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-        ])
-
-        img = test_transform(img)
-        img = img.unsqueeze(0)
-
-        with torch.no_grad():
-            outputs = __model(img)
-            _, preds = torch.max(outputs, 1)
-
-            classID = str(__classes_df.loc[__classes_df['index'] == preds[0].item()].iloc[0]['class'])
-            plantTypeList = __species_json[classID].split('_')
-            plantType = plantTypeList[0] + ' ' + plantTypeList[1].capitalize()
-
-            print(f'Predicted class ID : {classID}')
-            print(f'Plant Species Name : {plantType}')
-        
-        return {
-            'ClassID': classID,
-            'PlantType': plantType
-        }
-    except Exception as e:
-        print('Error', e)
-        raise BadRequestException('Something went wrong', HTTPStatus.BAD_REQUEST)
 
 if __name__ == '__main__':
     img = Image.open('./bitter_lettuce.jpeg')
